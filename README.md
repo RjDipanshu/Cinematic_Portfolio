@@ -151,7 +151,19 @@ cd Cinematic_Portfolio
 npm install
 ```
 
-### 3. Launch Development Server
+### 3. Configure Environment Variables
+Copy `.env.example` to `.env` and fill in your EmailJS credentials:
+```bash
+cp .env.example .env
+```
+Edit `.env`:
+```env
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+### 4. Launch Development Server
 ```bash
 npm run dev
 ```

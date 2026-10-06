@@ -38,6 +38,28 @@ const projects: Project[] = [
   },
   {
     number: '02',
+    title: 'ParkEase',
+    category: 'FULL STACK / INTERNSHIP',
+    description:
+      'A full-stack smart parking management system built during the Infosys Springboard Internship (Team A). Features interactive Leaflet maps, real-time slot availability, Razorpay payments, QR code booking, admin dashboard with analytics, and JWT-based role authorization.',
+    githubUrl: 'https://github.com/MOHIT-VERMA2002/Infosys_SpringBoard_InternShip_Team_A',
+    language: 'Java',
+    tech: [
+      'Spring Boot',
+      'React',
+      'MySQL',
+      'JWT',
+      'Razorpay',
+      'Leaflet Maps',
+    ],
+    metrics: [
+      { label: 'BACKEND', value: 'Spring Boot' },
+      { label: 'FRONTEND', value: 'React + Vite' },
+      { label: 'CONTEXT', value: 'Infosys Intern' },
+    ],
+  },
+  {
+    number: '03',
     title: 'LifeOS AI Intelligence',
     category: 'AI / DIGITAL WELLBEING',
     description:
@@ -59,7 +81,7 @@ const projects: Project[] = [
     ],
   },
   {
-    number: '03',
+    number: '04',
     title: 'Story Forge AI',
     category: 'AI / CREATIVE ENGINE',
     description:
@@ -81,50 +103,7 @@ const projects: Project[] = [
     ],
   },
   {
-    number: '04',
-    title: 'AI Image Generator',
-    category: 'AI / GENERATIVE ART',
-    description:
-      'A modern AI-powered image generation web application built with Streamlit and Pollinations AI, featuring customizable art styles, image enhancement, surprise prompts, and instant image downloads.',
-    githubUrl: 'https://github.com/RjDipanshu/Ai_Image',
-    language: 'Python',
-    tech: [
-      'Python',
-      'Streamlit',
-      'Pollinations AI',
-      'Image Processing',
-      'Art Styles',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'AI ENGINE', value: 'Pollinations' },
-      { label: 'FEATURE', value: 'Instant Download' },
-    ],
-  },
-  {
     number: '05',
-    title: 'AI Multiverse Chat Studio',
-    category: 'AI / CONVERSATIONAL',
-    description:
-      'A premium, stateful Streamlit chatbot powered by the Google Gemini API. Features 15+ interactive AI personas, multilingual responses, dynamic prompt inspector, and robust session-state memory retention.',
-    githubUrl: 'https://github.com/RjDipanshu/ai-multiverse-chat-studio',
-    language: 'Python',
-    tech: [
-      'Python',
-      'Streamlit',
-      'Gemini API',
-      'NLP',
-      'Multi-Persona',
-      'Session State',
-    ],
-    metrics: [
-      { label: 'PERSONAS', value: '15+ AI Roles' },
-      { label: 'LANGUAGES', value: 'Multilingual' },
-      { label: 'MODEL', value: 'Gemini Flash' },
-    ],
-  },
-  {
-    number: '06',
     title: 'Store Rating Platform',
     category: 'FULL STACK / WEB APP',
     description:
@@ -146,7 +125,7 @@ const projects: Project[] = [
     ],
   },
   {
-    number: '07',
+    number: '06',
     title: 'RAG Chatbot',
     category: 'AI / NLP RETRIEVAL',
     description:
@@ -168,129 +147,25 @@ const projects: Project[] = [
     ],
   },
   {
-    number: '08',
-    title: 'MirAI Identity Echo',
-    category: 'AI / INTERNSHIP PROJECT',
+    number: '07',
+    title: 'LedgerSync Seed',
+    category: 'FINTECH / BACKEND ENGINE',
     description:
-      'Streamlit-based web application developed for the MirAI School of Technology Virtual Summer Internship 2026, featuring user input validation, personalized message transmission, and AI token usage estimation.',
-    githubUrl: 'https://github.com/RjDipanshu/mirai-identity-echo-interface',
-    language: 'Python',
+      'Production-grade transaction ingestion, deduplication, categorization, and ledger synchronization engine for Simplify Money. Features DynamoDB single-table design, 100K-transaction scale benchmarks, and pure JDK zero-dependency architecture.',
+    githubUrl: 'https://github.com/RjDipanshu/ledger-sync-seed',
+    language: 'Java',
     tech: [
-      'Python',
-      'Streamlit',
-      'AI Tokens',
-      'Validation',
-      'MirAI Tech',
+      'Java',
+      'DynamoDB',
+      'Spring Boot',
+      'H2 Database',
+      'Docker',
+      'JUnit',
     ],
     metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'CONTEXT', value: 'Internship' },
-      { label: 'YEAR', value: '2026' },
-    ],
-  },
-  {
-    number: '09',
-    title: 'Trackify Train Voyage',
-    category: 'WEB APP / TRANSPORT',
-    description:
-      'A modern train tracking and voyage management web application built with TypeScript and React. Deployed on Vercel for seamless, real-time travel planning and monitoring.',
-    githubUrl: 'https://github.com/RjDipanshu/trackify-train-voyage',
-    language: 'TypeScript',
-    tech: [
-      'TypeScript',
-      'React',
-      'Vite',
-      'Vercel',
-      'Real-Time',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'TypeScript' },
-      { label: 'DEPLOY', value: 'Vercel' },
-      { label: 'TYPE', value: 'Web App' },
-    ],
-  },
-  {
-    number: '10',
-    title: 'Sign Language AI',
-    category: 'AI / ACCESSIBILITY',
-    description:
-      'An AI-powered sign language recognition system designed to bridge the communication gap. Leverages computer vision and machine learning to interpret hand gestures in real-time.',
-    githubUrl: 'https://github.com/RjDipanshu/sign_language_ai',
-    language: 'Python',
-    tech: [
-      'Python',
-      'Computer Vision',
-      'Machine Learning',
-      'OpenCV',
-      'Gesture Recognition',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'DOMAIN', value: 'Accessibility' },
-      { label: 'TYPE', value: 'CV / ML' },
-    ],
-  },
-  {
-    number: '11',
-    title: 'News Summarizer',
-    category: 'AI / NLP',
-    description:
-      'An intelligent news summarization engine that fetches, processes, and condenses news articles using NLP techniques. Provides quick, digestible summaries for efficient information consumption.',
-    githubUrl: 'https://github.com/RjDipanshu/News-Summarizer-main',
-    language: 'Python',
-    tech: [
-      'Python',
-      'NLP',
-      'Text Summarization',
-      'News API',
-      'Streamlit',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'DOMAIN', value: 'NLP' },
-      { label: 'TYPE', value: 'Summarizer' },
-    ],
-  },
-  {
-    number: '12',
-    title: 'Life OS AI Dashboard',
-    category: 'AI / PRODUCTIVITY',
-    description:
-      'AI-powered digital wellbeing dashboard built with Streamlit, Gemini AI, and Pandas to analyze screen time, visualize productivity trends, generate personalized lifestyle coaching, and track achievements.',
-    githubUrl: 'https://github.com/RjDipanshu/Life_Os_Ai',
-    language: 'Python',
-    tech: [
-      'Python',
-      'Streamlit',
-      'Gemini AI',
-      'Pandas',
-      'Data Viz',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'ENGINE', value: 'Gemini AI' },
-      { label: 'TYPE', value: 'Dashboard' },
-    ],
-  },
-  {
-    number: '13',
-    title: 'Dipanshu Chatbot',
-    category: 'AI / CONVERSATIONAL',
-    description:
-      'A personal AI chatbot showcasing conversational AI capabilities. Built with Python and modern AI libraries for interactive, context-aware dialogue experiences.',
-    githubUrl: 'https://github.com/RjDipanshu/dipanshu-chatbot-main',
-    language: 'Python',
-    tech: [
-      'Python',
-      'AI',
-      'Chatbot',
-      'NLP',
-      'Conversational AI',
-    ],
-    metrics: [
-      { label: 'LANGUAGE', value: 'Python' },
-      { label: 'TYPE', value: 'Chatbot' },
-      { label: 'STATUS', value: 'Active' },
+      { label: 'LANGUAGE', value: 'Java' },
+      { label: 'SCALE', value: '100K Benchmark' },
+      { label: 'DB', value: 'DynamoDB STD' },
     ],
   },
 ];
@@ -559,6 +434,35 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </ScrollStack>
 
+        {/* Visit GitHub for More */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 flex flex-col items-center text-center"
+        >
+          <div className="w-full max-w-md h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent mb-8" />
+          
+          <p
+            className="text-xs sm:text-sm font-light text-[#A8988B] mb-6 max-w-lg leading-relaxed"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            These are just a few highlights — there's a lot more to explore across AI, full-stack, and open-source projects.
+          </p>
+
+          <a
+            href="https://github.com/RjDipanshu?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center space-x-3 px-8 py-4 border border-[#D4AF37]/60 bg-[#0E0C0A] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black text-[11px] sm:text-xs font-semibold tracking-[0.3em] uppercase rounded-sm transition-all duration-400 shadow-[0_0_30px_rgba(212,175,55,0.08)] hover:shadow-[0_0_40px_rgba(212,175,55,0.25)] group/more"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            <GitHubIcon className="w-5 h-5 transition-transform duration-300 group-hover/more:scale-110" />
+            <span>VISIT GITHUB FOR MANY MORE</span>
+            <span className="text-sm transition-transform duration-300 group-hover/more:translate-x-1">→</span>
+          </a>
+        </motion.div>
       </div>
     </section>
   );

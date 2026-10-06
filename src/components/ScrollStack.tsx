@@ -61,8 +61,9 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const cardsRef = useRef<HTMLElement[]>([]);
   const initialTopsRef = useRef<number[]>([]);
   const lastTransformsRef = useRef(new Map());
-  const isUpdatingRef = useRef(false);
   const activeCardIndexRef = useRef<number>(-1);
+  const endElementTopRef = useRef<number>(0);
+  const rafPendingRef = useRef(false);
 
   const parsePercentage = useCallback((value: string | number, containerHeight: number) => {
     if (typeof value === 'string' && value.includes('%')) {
@@ -102,18 +103,11 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   }, [getScrollData, parsePercentage, stackPosition]);
 
   const updateCardTransforms = useCallback(() => {
-    if (!cardsRef.current.length || isUpdatingRef.current) return;
-
-    isUpdatingRef.current = true;
+    if (!cardsRef.current.length) return;
 
     const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-
-    const endElement = scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement;
-
-    const endElementTop = endElement
-      ? endElement.getBoundingClientRect().top + window.scrollY
-      : 0;
+    const endElementTop = endElementTopRef.current;
 
     // 1. Identify which card is currently active / in focus
     let activeIndex = 0;
@@ -191,7 +185,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       }
 
       const newTransform = {
-        translateY: Math.round(translateY * 100) / 100,
+        translateY: Math.round(translateY * 10) / 10,
         scale: Math.round(scale * 1000) / 1000,
         opacity: Math.round(opacity * 100) / 100,
       };
@@ -199,9 +193,9 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       const lastTransform = lastTransformsRef.current.get(i);
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
+        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
         Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.opacity - newTransform.opacity) > 0.02;
+        Math.abs(lastTransform.opacity - newTransform.opacity) > 0.01;
 
       if (hasChanged) {
         card.style.transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale})`;
@@ -220,8 +214,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         }
       }
     });
-
-    isUpdatingRef.current = false;
   }, [
     itemScale,
     itemStackDistance,
@@ -236,16 +228,58 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   ]);
 
   const handleScroll = useCallback(() => {
+    // Use rAF dedup to prevent multiple scroll events per frame
+    if (rafPendingRef.current) return;
+    rafPendingRef.current = true;
+    requestAnimationFrame(() => {
+      updateCardTransforms();
+      rafPendingRef.current = false;
+    });
+  }, [updateCardTransforms]);
+
+  const recalculatePositions = useCallback(() => {
+    const cards = cardsRef.current;
+    if (!cards.length) return;
+
+    // Temporarily reset transforms to get true positions
+    const savedTransforms = cards.map(card => card.style.transform);
+    const savedOpacities = cards.map(card => card.style.opacity);
+    cards.forEach(card => {
+      card.style.transform = 'none';
+      card.style.opacity = '1';
+    });
+
+    // Force reflow
+    void scrollerRef.current?.offsetHeight;
+
+    initialTopsRef.current = cards.map((card) => {
+      const rect = card.getBoundingClientRect();
+      return rect.top + window.scrollY;
+    });
+
+    const endElement = scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement;
+    if (endElement) {
+      endElementTopRef.current = endElement.getBoundingClientRect().top + window.scrollY;
+    }
+
+    // Restore transforms
+    cards.forEach((card, i) => {
+      card.style.transform = savedTransforms[i];
+      card.style.opacity = savedOpacities[i];
+    });
+
+    // Clear cached transforms to force full re-render
+    lastTransformsRef.current.clear();
     updateCardTransforms();
   }, [updateCardTransforms]);
 
   const setupLenis = useCallback(() => {
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.0,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.8,
+      touchMultiplier: 1.2,
       infinite: false,
     });
 
@@ -277,6 +311,12 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       return rect.top + window.scrollY;
     });
 
+    // Cache end element position
+    const endElement = scroller.querySelector('.scroll-stack-end') as HTMLElement;
+    if (endElement) {
+      endElementTopRef.current = endElement.getBoundingClientRect().top + window.scrollY;
+    }
+
     cards.forEach((card, i) => {
       card.style.zIndex = `${i + 1}`;
       if (i < cards.length - 1) {
@@ -301,7 +341,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     setupLenis();
     updateCardTransforms();
 
+    // Recalculate positions on resize
+    const handleResize = () => {
+      recalculatePositions();
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -312,7 +359,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       cardsRef.current = [];
       initialTopsRef.current = [];
       lastTransformsRef.current.clear();
-      isUpdatingRef.current = false;
     };
   }, [
     itemDistance,
@@ -323,6 +369,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     setupLenis,
     updateCardTransforms,
     scrollToCard,
+    recalculatePositions,
   ]);
 
   return (

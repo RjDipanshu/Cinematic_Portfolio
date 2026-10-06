@@ -18,15 +18,19 @@
   transform-origin: top center;
   will-change: transform, opacity;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   cursor: pointer;
+  /* Only transition non-scroll properties to avoid jitter */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  /* Force GPU compositing layer */
+  contain: layout style;
 }
 
 .scroll-stack-card:hover {
-  filter: brightness(1.03);
+  /* Use box-shadow instead of filter to avoid recompositing during scroll */
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.05);
 }
 
 .scroll-stack-end {

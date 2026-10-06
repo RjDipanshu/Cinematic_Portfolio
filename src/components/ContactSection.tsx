@@ -1,6 +1,7 @@
 // src/components/ContactSection.tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -13,36 +14,38 @@ export const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setErrorMsg(null);
 
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/dipanshuraj0708@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject || `New Portfolio Message from ${formData.name}`,
-          message: formData.message,
-          _subject: `[Portfolio Transmission] from ${formData.name}: ${formData.subject || 'Inquiry'}`,
-          _template: 'table',
-        }),
-      });
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      const data = await response.json();
-
-      if (response.ok || data.success === 'true' || data.success === true) {
-        setSent(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        throw new Error(data.message || 'Submission failed. Please try direct email.');
-      }
-    } catch (err: any) {
-      console.warn('Form submission encountered an issue, offering direct dispatch fallback:', err);
-      // Even if network fails or CORS, let user still know or fallback
+    if (!serviceId || !templateId || !publicKey) {
       setErrorMsg(
-        'Direct gateway timed out. You can click below to dispatch your message directly via your email client to dipanshuraj0708@gmail.com.'
+        'EmailJS credentials are not configured yet. Please add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY to your .env file.'
+      );
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const templateParams = {
+        name: formData.name,
+        from_name: formData.name,
+        email: formData.email,
+        from_email: formData.email,
+        reply_to: formData.email,
+        subject: formData.subject || `New Portfolio Message from ${formData.name}`,
+        message: formData.message,
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setSent(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      console.error('EmailJS transmission error:', err);
+      const details = err?.text || err?.message || 'Transmission failed';
+      setErrorMsg(
+        `Failed to send message via EmailJS (${details}). You can also dispatch directly via your email client:`
       );
     } finally {
       setIsSubmitting(false);
